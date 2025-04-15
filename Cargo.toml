@@ -1,0 +1,30 @@
+[package]
+name = "ecdsa_2r"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+round-based = { version = "0.3", features = ["dev", "derive"] }
+curv-kzen = { version = "0.10", default-features = true }
+ecdsa = "0.16.6"
+tokio = { version = "1.40", features = ["full"] }
+futures = "0.3"
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+generic-array = { version = "1.1", features = ["serde"] }
+thiserror = "1.0"
+sha2 = "0.10"
+bicycl = { path = "./bicycl"}
+chrono = "0.4"
+rayon = "1.10"
+itertools = "0.13"
+
+[profile.release]
+debug = true
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "threshold_ecdsa_bench"
+harness = false
