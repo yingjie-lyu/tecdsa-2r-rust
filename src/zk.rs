@@ -16,6 +16,16 @@ pub struct CLProof {
     sv: Zq,
 }
 
+impl CLProof {
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let c_tiled_bytes = self.c_tiled.to_bytes();
+        let V_tiled_bytes = self.V_tiled.to_bytes(true).to_vec();
+        let sr_bytes = self.sr.to_bytes();
+        let sv_bytes = self.sv.to_bytes().to_vec();
+        [c_tiled_bytes, V_tiled_bytes, sr_bytes, sv_bytes].concat()
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct PedProof {
     c_tiled: QFI,
@@ -24,6 +34,15 @@ pub struct PedProof {
     sv: Mpz,
 }
 
+impl PedProof {
+    pub fn to_bytes(&self) -> Vec<u8> {
+        let c_tiled_bytes = self.c_tiled.to_bytes();
+        let V_tiled_bytes = self.V_tiled.to_bytes(true).to_vec();
+        let sr_bytes = self.sr.to_bytes();
+        let sv_bytes = self.sv.to_bytes();
+        [c_tiled_bytes, V_tiled_bytes, sr_bytes, sv_bytes].concat()
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct NIZKAoK {

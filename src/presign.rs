@@ -60,9 +60,11 @@ impl PreSignM {
         let pe_gamma_bytes = self.pe_gamma.to_bytes();
         
         // TODO: add ped_proof and cl_proof to bytes
+        let ped_proof_bytes = self.ped_proof.to_bytes();
+        let cl_proof_bytes = self.cl_proof.to_bytes();
 
         // concatenate all bytes together
-        [k_bytes, gamma_bytes, pe_k_bytes, pe_gamma_bytes].concat()
+        [k_bytes, gamma_bytes, pe_k_bytes, pe_gamma_bytes, ped_proof_bytes, cl_proof_bytes].concat()
     }
 }
 
