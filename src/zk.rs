@@ -97,8 +97,10 @@ impl NIZKAoK {
 
         let e = Self::hash(&[h0_bytes, h1_bytes, f_bytes, g_bytes, c_bytes, V_bytes, c_tiled_bytes, V_tiled_bytes].concat());
 
-        //TODO: check sr < bound and sv < Zq::group_order()
-
+        //check r < bound and sv < Zq::group_order()
+        if proof.sr.to_bytes() > self.r_bound.to_bytes() || proof.sv.to_bytes().to_vec() > pp.crs.cl.q().to_bytes() {
+            return false;
+        }
 
         let clear_text = ClearText::with_mpz(&pp.crs.cl, &Mpz::from(&proof.sv));
         let c_temp: CipherText = pp.crs.cl.encrypt_with_r(&pp.crs.pk, &clear_text, &proof.sr);
@@ -156,8 +158,10 @@ impl NIZKAoK {
 
         let e = Self::hash(&[h0_bytes, h1_bytes, g_bytes, c_bytes, V_bytes, c_tiled_bytes, V_tiled_bytes].concat());
 
-        //TODO: check sr < bound and sv < Zq::group_order()
-        
+        //check sr < r_bound and sv < v_bound
+        if proof.sr.to_bytes() > self.r_bound.to_bytes() || proof.sv.to_bytes() > self.v_bound.to_bytes() {
+            return false;
+        }
 
         let h0_sr_mut_h1_sv = pp.crs.cl.power_of_h(&proof.sr).compose(&pp.crs.cl, &pp.crs.pk.exp(&pp.crs.cl, &proof.sv));
         let c_tiled_mut_c_pow_e = proof.c_tiled.compose(&pp.crs.cl, &c.exp(&pp.crs.cl, &Mpz::from(&e)));
